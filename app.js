@@ -18,7 +18,7 @@ d3.csv('data.csv', function(data) {
 
 	// set scales
 	var yScale = d3.scale.ordinal()
-					.rangeRoundBands([0, 150])
+					.rangeRoundBands([0, 150], .2)
 					.domain(data.map(function(element) {
 						return element.skill;
 					}));
@@ -40,7 +40,8 @@ d3.csv('data.csv', function(data) {
 	var bars = skillz.selectAll('rect')
 						.data(data)
 						.enter()
-						.append('rect');
+						.append('rect')
+						.attr('margin', 20);
 
 	// call axes
 	skillz.append('g')
@@ -52,27 +53,7 @@ d3.csv('data.csv', function(data) {
 			.attr('class', 'y axis')
 			.call(yAxis);
 
-	bars.attr('x', xScale(0))
-			.attr('y', function(d, i){
-				return yScale(d.skill);
-			})
-			.attr('height', yScale.rangeBand())
-			.attr('width', function(d, i){
-				return xScale(d[time]);
-			})
-			.style('stroke', 'rgba(0, 0, 0, 0.5)')
-			.style('fill', function(d){
-				if (d[time] === "1") {
-					return "red";
-				} else if (d[time] === "2") {
-					return "orange";
-				} else if (d[time] === "3") {
-					return "yellow";
-				} else if (d[time] === "4") {
-					return "green";
-				}
-			});
-
+	draw();
 
 	function draw() {
 		bars.transition()
@@ -86,15 +67,18 @@ d3.csv('data.csv', function(data) {
 			.attr('width', function(d, i){
 				return xScale(d[time]);
 			})
+			.style('stroke', 'none')
 			.style('fill', function(d){
-				if (d[time] === "1") {
-					return "red";
+				if (d[time] === "0") {
+					return "#D1FAFF";
+				} else if (d[time] === "1") {
+					return "#A8E0FF";
 				} else if (d[time] === "2") {
-					return "orange";
+					return "#7CC6FE";
 				} else if (d[time] === "3") {
-					return "yellow";
+					return "#0267C1";
 				} else if (d[time] === "4") {
-					return "green";
+					return "#034078";
 				}
 			});
 	}
